@@ -68,7 +68,8 @@ class Cartcontroller extends Controller
         if($validId == NULL)
         {
             return response()->json([
-                'status_order' => $cart->order_status
+                'status_message' => 'Success',
+                'status_order' => $validId
             ]);
         } else {
             $cart = Cart::find($validId);
@@ -76,7 +77,9 @@ class Cartcontroller extends Controller
             $cart->save();
     
             return response()->json([
-                'status_order' => $cart->order_status
+                'status_message' => 'Success',
+                'status_order' => $validId,
+                'data' => $cart
             ]);
         }
     }
