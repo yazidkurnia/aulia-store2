@@ -117,7 +117,11 @@
                                 Keranjang Belanja &nbsp;
                                 <a href="#">
                                     <i class="icon_bag_alt"></i>
-                                    <span>3</span>
+                                    @if (Auth::user() && Auth::user()->user_role != 'Administrator')
+                                        <span>{{ $countUserCart }}</span>
+                                    @else
+                                        <span>0</span>
+                                    @endif
                                 </a>
                                 <div class="cart-hover">
                                     <div class="select-items">
