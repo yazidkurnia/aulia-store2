@@ -32,6 +32,7 @@ class Cartcontroller extends Controller
     
         $pageData['page_title'] = 'User Cart';
         $pageData['activeCart'] = Cart::where('status', '=', 1)->get();
+        $pageData['countUserCart'] = Cart::where('user_id', '=', Auth::user()->id)->count();
         // dd($pageData['cartList']);
 
         return view('user.cartlist', $pageData);
@@ -68,18 +69,18 @@ class Cartcontroller extends Controller
         if($validId == NULL)
         {
             return response()->json([
-                'status_message' => 'Success',
-                'status_order' => $validId
+                'status_message' => 'Failed',
+                'status_code' => 500
             ]);
         } else {
             $cart = Cart::find($validId);
-            $cart->order_status;
+            // dd($cart);
+            $cart->order_status = decrypt($request->status);
             $cart->save();
     
             return response()->json([
                 'status_message' => 'Success',
-                'status_order' => $validId,
-                'data' => $cart
+                'status_code' => 200,
             ]);
         }
     }
