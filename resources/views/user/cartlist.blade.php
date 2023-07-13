@@ -54,11 +54,11 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item item-status"
-                                                            data-id="{{ encrypt($v->cart_id) }}" data-status="1"
-                                                            type="button">Order</a>
+                                                            data-id="{{ encrypt($v->cart_id) }}"
+                                                            data-status="{{ encrypt('1') }}" type="button">Order</a>
                                                         <a class="dropdown-item item-status"
-                                                            data-id="{{ encrypt($v->cart_id) }}" data-status="0"
-                                                            type="button">Un Order</a>
+                                                            data-id="{{ encrypt($v->cart_id) }}"
+                                                            data-status="{{ encrypt('0') }}" type="button">Un Order</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -137,7 +137,7 @@
 
                 var id = $(this).data('id');
                 var status = $(this).data('status');
-                // console.log(id);
+                // console.log(status);
 
                 $.ajax({
                     url: '/dashboard/update-cart-status-order',
