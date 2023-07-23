@@ -29,6 +29,12 @@
     <link rel="stylesheet" href="{{ asset('template/css/jquery-ui.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template/css/slicknav.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template/css/style.css') }}" type="text/css" />
+    <!-- css.gg -->
+    <link href="https://css.gg/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    {{-- <link href="{{ asset('vendor/toastr/toastr.css') }}" rel="stylesheet">
+    <script src="{{ asset('vendor/toastr/toastr.js') }}"></script> --}}
+
 
     <script type="text/javascript">
         // NOTE:: logout scrypt

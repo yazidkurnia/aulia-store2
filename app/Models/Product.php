@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Productdetail;
+use App\Models\Cart;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
@@ -24,7 +25,7 @@ class Product extends Model
     // NOTE:: many to many relationship for product to cart
     public function carts()
     {
-        return $this->belongsToMany(Cart::class, 'cart_product')->withPivot('quantity');
+        return $this->belongsToMany(Cart::class);
     }
 
 }

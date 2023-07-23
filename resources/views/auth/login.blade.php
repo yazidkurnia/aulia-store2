@@ -28,39 +28,44 @@
 
     <div class="container-fluid half-background">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-4  pt-5 mt-5">
-                <div class="card">
-                    <div class="card-header">
-                        Sign In
+            <div class="col-md-6 pt-5 mt-5">
+                <div class="card mb-3" style="max-width: 600px; border-radius: 24px;">
+                  <div class="row no-gutters">
+                    <div class="col-md-6">
+                      <img src="..." alt="...">
                     </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Enter email">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
-                                    anyone else.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                {{-- <button type="submit" class="btn btn-warning w-100 text-light"
-                                    style="border-radius: 50px;">Submit</button> --}}
-                                <button type="submit" class="btn btn-warning w-100 text-light"
-                                    style="border-radius: 50px;">Submit</button>
-                            </div>
-                            <div class="form-group">
-                                <span>Doesn't have an account?</span> <a href="{{ url('/sign-up') }}">Sign Up Now</a>
-                            </div>
+                    <div class="col-md-6">
+                      <div class="card-body">
+                           <form method="POST" action="{{ route('login') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Enter email">
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                        anyone else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    {{-- <button type="submit" class="btn btn-warning w-100 text-light"
+                                        style="border-radius: 50px;">Submit</button> --}}
+                                    <button type="submit" class="btn btn-warning w-100 text-light"
+                                        style="border-radius: 50px;">Submit</button>
+                                </div>
+                                <div class="form-group">
+                                    <span>Doesn't have an account?</span> <a href="{{ url('/sign-up') }}">Sign Up Now</a>
+                                </div>
 
-                        </form>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                </div>
+
             </div>
         </div>
     </div>

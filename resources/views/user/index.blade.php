@@ -28,8 +28,7 @@
                                         <a href="{{ route('login') }}" class="btn btn-primary">+ Cart</a>
                                     @else
                                         <a href="{{ route('dashboard.product.detail', encrypt($v->id)) }}"
-                                            class="btn btn-warning">+
-                                            Cart</a>
+                                            class="btn btn-warning"><i class="gg-shopping-bag text-white"></i></a>
                                     @endif
                                 </div>
                             </div>

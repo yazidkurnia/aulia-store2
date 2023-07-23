@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboardcontroller;
 use App\Http\Controllers\Admin\Admincontroller;
 use App\Http\Controllers\Productdetailcontroller;
 use App\Http\Controllers\Cartcontroller;
+use App\Http\Controllers\Checkout\Checkoutcontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,15 +18,18 @@ use App\Http\Controllers\Cartcontroller;
 |
 */
 
-Route::get('/', [Dashboardcontroller::class, 'index'])->name('index');
+Route::GET('/', [Dashboardcontroller::class, 'index'])->name('index');
 
 Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('dashboard')->group(function() {
-    Route::get('/', [Dashboardcontroller::class, 'index'])->name('index');
-    Route::get('/product-detail/{id}', [Productdetailcontroller::class, 'detail_product'])->name('product.detail');
+    Route::GET('/', [Dashboardcontroller::class, 'index'])->name('index');
+    Route::GET('/product-detail/{id}', [Productdetailcontroller::class, 'detail_product'])->name('product.detail');
     Route::POST('/add-to-cart', [Cartcontroller::class, 'add_to_cart'])->name('add.to.cart');
     Route::GET('/cart-list', [Cartcontroller::class, 'index'])->name('user.cart.list');
     Route::POST('/update-cart-status-order', [Cartcontroller::class, 'update_status_order'])->name('update.order.status');
-
+    Route::GET('/cart-to-order', [Cartcontroller::class, 'cartToOrder'])->name('cart.to.order');
+    Route::POST('/add-qty-cart', [Cartcontroller::class, 'add_cart_qty'])->name('add.qty.cart');
+    Route::POST('/get-user-bill', [Cartcontroller::class, 'getBill'])->name('get.user.bill');
+    Route::POST('/user/checkout', [Checkoutcontroller::class, 'storeCheckout'])->name('user.checkout.prosess');
 
     Route::middleware(['admin:Administrator'])->name('admin.')->prefix('admin')->group(function() {
         Route::get('/', [Admincontroller::class, 'index'])->name('index');

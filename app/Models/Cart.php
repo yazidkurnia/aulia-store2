@@ -10,7 +10,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'product_id', 'totalqty', 'status', 'order_status'
+        'user_id', 'product_id', 'totalqty', 'status', 'order_status', 'subtotal'
     ];
 
     /**
@@ -26,7 +26,7 @@ class Cart extends Model
     // NOTE:: many to many relationship for cart and product
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'cart_product')->withPivot('quantity');
+        return $this->belongsToMany(Product::class);
     }
 
 

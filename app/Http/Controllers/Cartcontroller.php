@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Productdetail;
 use Auth;
 use DB;
+
+/**
+ * to create a function remember to create it 
+ * with single prosses only 
+ **/
 
 class Cartcontroller extends Controller
 {
@@ -22,18 +28,17 @@ class Cartcontroller extends Controller
             'products.*',
             'productdetails.*',
             'productimages.*'
+            // 'carts.qty as qtyOfCart'
         )
         ->where('carts.user_id', Auth::user()->id)
         ->leftJoin('products', 'products.id', '=', 'carts.product_id')
         ->leftJoin('productdetails', 'products.id', '=', 'productdetails.product_id')
         ->leftJoin('productimages', 'products.id', '=', 'productimages.product_id')
         ->get();
-    
-    
+
         $pageData['page_title'] = 'User Cart';
         $pageData['activeCart'] = Cart::where('status', '=', 1)->get();
         $pageData['countUserCart'] = Cart::where('user_id', '=', Auth::user()->id)->count();
-        // dd($pageData['cartList']);
 
         return view('user.cartlist', $pageData);
     }
@@ -58,6 +63,8 @@ class Cartcontroller extends Controller
         }
     }
 
+    public function min_to_cart(Request $request){}
+
     public function update_status_order(Request $request)
     {
         /**
@@ -66,6 +73,10 @@ class Cartcontroller extends Controller
          *        decryot first
          */
         $validId = decrypt($request->id);
+
+        // NOTE:: get data cart and product
+        $cart = Cart::find($validId);
+
         if($validId == NULL)
         {
             return response()->json([
@@ -73,16 +84,87 @@ class Cartcontroller extends Controller
                 'status_code' => 500
             ]);
         } else {
-            $cart = Cart::find($validId);
-            // dd($cart);
-            $cart->order_status = decrypt($request->status);
-            $cart->save();
-    
+            if ($request->status == 1) {
+                $cart->order_status = $request->status;
+                $cart->save();
+            }else{
+                $cart->order_status = $request->status;
+                $cart->save();
+            }
+
+            // NOTE:: get active cart with order status = 1
+            $cartToOrder =  Cart::select(
+                'carts.id as cart_id',
+                'carts.totalqty as qtyOfCart',
+                'productdetails.prise as productprice'
+            )
+            ->where(['carts.user_id' => Auth::user()->id,'carts.order_status' => 1])
+            ->leftJoin('products', 'products.id', '=', 'carts.product_id')
+            ->leftJoin('productdetails', 'productdetails.product_id', '=', 'products.id')
+            ->get();
+
             return response()->json([
                 'status_message' => 'Success',
                 'status_code' => 200,
+                'data' => $cartToOrder
             ]);
         }
+    }
+
+    public function get_active_order()
+    {
+        $cartToOrder = Cart::where(['carts.user_id' => Auth::user()->id, 'cars.order_status' => 1])->get();
+        dd($cartToOrder);
+    }
+
+    /*
+    * @param : array id
+    */
+    public function add_cart_qty(Request $request)
+    {
+        $cart          = Cart::find($request->id);
+        $productDetail = Productdetail::where('product_id', $cart->product_id)->get();
+        $subtotal      = $productDetail[0]->prise * $request->qty;
+
+        // NOTE:: do update cart qty and subtotal
+        $cart->totalqty = $request->qty;
+        $cart->subtotal = $subtotal;
+        $cart->save();
+
+        return response()->json([
+            'status_message' => 'Success',
+            'status_code'    => 200
+        ]);
+    }
+
+    public function getBill()
+    {
+        $getCartByOrderStatusActive = Cart::where(['user_id' => Auth::user()->id, 'order_status' => 1])->get();
+        $countItem                  = Cart::where(['user_id' => Auth::user()->id, 'order_status' => 1])->count();
+        $total                      = [];
+        $i                          = 0;
+        $totalPrice                 = 0;
+
+        foreach($getCartByOrderStatusActive as $v)
+        {
+            $total[] += $v->subtotal;
+        }
+
+        for ($i=0; $i < count($total); $i++) { 
+            $totalPrice += $total[$i];
+            // $totalPrice += $total[$i];
+        }
+
+        $data = array(
+            'subtotal' => number_format($totalPrice, 2, '.', '.'),
+            'totalqty' => $countItem
+        );
+
+        return response()->json([
+            'status_message' => 'Success',
+            'status_code'    => 200,
+            'data'           => $data
+        ]);
     }
 
 }
